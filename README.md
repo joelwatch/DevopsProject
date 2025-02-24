@@ -54,19 +54,23 @@ This will create the EC2 instance, security groups, and install necessary tools 
 ## SonarQube Configuration
 1. **Login Credentials**: Use `admin` for both username and password.
 2. **Generate SonarQube Token**:
-   - Create a token under `Administration → Security → Users → Tokens`.
+   - Create a token under `Administration → Security → Users → Tokens (name: sonar-token, generate & copy`.
    - Save the token for integration with Jenkins.
+3. **Create SonarQube wehbook**
+   - Create a webhook under `Configuration -> Webhooks -> Create (name: sonarqube-webhook, url: jenkins url http://ip:8080/sonarqube-webhook -> create`
 
 ## Jenkins Configuration
 1. **Add Jenkins Credentials**:
-   - Add the SonarQube token, AWS access key, and secret key in `Manage Jenkins → Credentials → System → Global credentials`.
+   - Add the SonarQube token, AWS access key, and secret key in `Manage Jenkins → Credentials → System → Global credentials, (secret text, name: sonar-token, access-key, secret-key)`.
 2. **Install Required Plugins**:
-   - Install plugins such as SonarQube Scanner, NodeJS, Docker, and Prometheus metrics under `Manage Jenkins → Plugins`.
+   - Install plugins such as SonarQube Scanner, NodeJS, Docker, and Prometheus metrics under `Manage Jenkins → Plugins -> available plugins (sonarqube scanner, nodejs, pipeline: stage view, eclipse temurin, docker all, prometheus metric -> install & restart jenkins`.
 
 3. **Global Tool Configuration**:
-   - Set up tools like JDK 17, SonarQube Scanner, NodeJS, and Docker under `Manage Jenkins → Global Tool Configuration`.
+   - Set up tools like JDK 17, SonarQube Scanner, NodeJS, and Docker under `Manage Jenkins → system -> SonarQube installations: add sonarqube(name: sonar server, url: sonarqube url, server authentication -> select sonar-token) `.
+   - Set up tools `go to tools JDK installation -> add JDK(name: JDK, check install automatically, installer: install from adoptium, select version 17.0.8.1, add sonarqube scanner(name:SonarQube Scanner, install automatically, -> add nodejs(name: NodeJS, version 16.20.0) -> add docker(name:Docker, install from docker.com, version:latest) -> save`
 
 ## Pipeline Overview
+`create a build pipeline with HELLO WORD and change the script, run the pipeline and stop it, re-run it with parameter and enter the accountID`
 ### Pipeline Stages
 1. **Git Checkout**: Clones the source code from GitHub.
 2. **SonarQube Analysis**: Performs static code analysis.
