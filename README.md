@@ -31,7 +31,7 @@ This project demonstrates deploying an Amazon Prime clone using a set of DevOps 
 1. **Clone the Repository** (Open Command Prompt & run below):
    ```bash
    git clone https://github.com/joelwatch/DevopsProject.git
-   cd DevopsProject2
+   cd DevopsProject
    code .   # this command will open VS code in backend
    ```
 2. **Initialize and Apply Terraform**:
@@ -122,9 +122,16 @@ pipeline {
         
         stage('3. Quality Gate') {
             steps {
-                waitForQualityGate abortPipeline: false, 
-                credentialsId: 'sonar-token'
-            }
+        	timeout(time: 1, unit: 'MINUTES') {
+            		script {
+                		def qg = waitForQualityGate()
+                		if (qg.status != 'OK') {
+                    			echo "Quality Gate status: ${qg.status}"
+                    			// Continue anyway since abortPipeline is false
+                			}
+            			}
+        		}
+		}
         }
         
         stage('4. Install npm') {
