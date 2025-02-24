@@ -122,16 +122,16 @@ pipeline {
         
         stage('3. Quality Gate') {
             steps {
-        	timeout(time: 1, unit: 'MINUTES') {
+        	    timeout(time: 1, unit: 'MINUTES') {
             		script {
-                		def qg = waitForQualityGate()
-                		if (qg.status != 'OK') {
-                    			echo "Quality Gate status: ${qg.status}"
-                    			// Continue anyway since abortPipeline is false
-                			}
-            			}
+                	def qg = waitForQualityGate()
+                	if (qg.status != 'OK') {
+                    echo "Quality Gate status: ${qg.status}"
+                    	// Continue anyway since abortPipeline is false
+                }
+            	}
         		}
-		}
+		      }
         }
         
         stage('4. Install npm') {
